@@ -1,4 +1,5 @@
 import tensorflow as tf
+#X 와 Y 의 상관관계를 분석하는 기초적인 선형 회귀 모델을 만들고 실행
 import numpy as np
 
 tf.enable_eager_execution()
