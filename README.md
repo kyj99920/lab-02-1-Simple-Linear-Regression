@@ -1,0 +1,99 @@
+# lab-02-1-Simple-Linear-Regression-eager
+import tensorflow as tf
+#X 와 Y 의 상관관계를 분석하는 기초적인 선형 회귀 모델을 만들고 실행
+import numpy as np
+
+tf.enable_eager_execution()
+#즉시 실행 (eager execution)을 시작
+x_data = [1, 2, 3, 4, 5]
+y_data = [1, 2, 3, 4, 5]
+#입력
+import matplotlib.pyplot as plt
+#matplotlib을 불러옴
+plt.plot(x_data, y_data, 'o')
+#pylab서브패키지의 plot 명령
+
+plt.ylim(0, 8)
+#그림의 범위지정
+
+v =[1., 2., 3., 4.]
+#v값 설정
+tf.reduce_mean(v)
+#변수 v가 가리키는 배열 전체  원소의 합을 원소 개수로 나누어 계산
+tf.square(3)
+#tf.square 제곱을 계산 
+
+x_data = [1, 2, 3, 4, 5]
+y_data = [1, 2, 3, 4, 5]
+#데이터입력
+W = tf.Variable(2.0)
+b = tf.Variable(0.5)
+#W와 b 두개의 변수 생성
+
+hypothesis = W * x_data + b
+#hypothesis 정의
+
+W.numpy(), b.numpy()
+hypothesis.numpy()
+#텐서에서 넘파이 어레이로 변환하려면 .numpy() 메소드 사용
+
+plt.plot(x_data, hypothesis.numpy(), 'r-')
+plt.plot(x_data, y_data, 'o')
+#pylab서브패키지의 plot 명령
+plt.ylim(0, 8)
+#그림의 범위지정
+plt.show()
+#시각화
+
+cost = tf.reduce_mean(tf.square(hypothesis - y_data))
+#손실 함수를 작성
+with tf.GradientTape() as tape:
+#tape에 계산 과정을 기록해두었다가 tape.gradient를 이용해서 미분을 자동으로 구할 수 있음
+    hypothesis = W * x_data + b
+    cost = tf.reduce_mean(tf.square(hypothesis - y_data))
+#hypothesis 와 cost 함수 정의
+
+W_grad, b_grad = tape.gradient(cost, [W, b])
+W_grad.numpy(), b_grad.numpy()
+
+learning_rate = 0.01
+#학습률 입력
+
+W.assign_sub(learning_rate * W_grad)
+b.assign_sub(learning_rate * b_grad)
+#w←w−η∇w의 식에 따라 파라미터를 업데이트
+
+W.numpy(), b.numpy()
+#텐서에서 넘파이 어레이로 변환하려면 .numpy() 메소드 사용
+
+plt.plot(x_data, hypothesis.numpy(), 'r-')
+plt.plot(x_data, y_data, 'o')
+#pylab서브패키지의 plot 명령
+plt.ylim(0, 8)
+#그림의 범위지정
+
+
+W = tf.Variable(2.9)
+b = tf.Variable(0.5)
+#W와 b 두개의 변수 생성
+
+for i in range(100):
+    with tf.GradientTape() as tape:
+        hypothesis = W * x_data + b
+        cost = tf.reduce_mean(tf.square(hypothesis - y_data))
+        #hypothesis와 cost 정의
+    W_grad, b_grad = tape.gradient(cost, [W, b])
+    #경사를 계산하기 위해서 테이프를 뒤로 감아서 재생 , 단하나의 경사만 계산 
+    W.assign_sub(learning_rate * W_grad)
+    b.assign_sub(learning_rate * b_grad)
+    if i % 10 == 0:
+      print("{:5}|{:10.4f}|{:10.4f}|{:10.6f}".format(i, W.numpy(), b.numpy(), cost))
+    # i % 10 이 0이면 아래의 값 출력
+plt.plot(x_data, y_data, 'o')
+plt.plot(x_data, hypothesis.numpy(), 'r-')
+#pylab서브패키지의 plot 명령
+plt.ylim(0, 8)
+#그림의 범위지정
+print(W * 5 + b)
+print(W * 2.5 + b)
+#출력
