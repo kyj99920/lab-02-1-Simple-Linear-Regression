@@ -1,7 +1,7 @@
 import tensorflow as tf
 #X 와 Y 의 상관관계를 분석하는 기초적인 선형 회귀 모델을 만들고 실행
 import numpy as np
-
+#numpy 라이브러리를 np라는 이름으로 반입
 tf.enable_eager_execution()
 #즉시 실행 (eager execution)을 시작
 x_data = [1, 2, 3, 4, 5]
@@ -78,6 +78,7 @@ b = tf.Variable(0.5)
 
 for i in range(100):
     with tf.GradientTape() as tape:
+    #tape에 계산 과정을 기록해두었다가 tape.gradient를 이용해서 미분을 자동으로 구할 수 있음
         hypothesis = W * x_data + b
         cost = tf.reduce_mean(tf.square(hypothesis - y_data))
         #hypothesis와 cost 정의
