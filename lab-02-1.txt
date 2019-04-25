@@ -54,7 +54,7 @@ with tf.GradientTape() as tape:
 
 W_grad, b_grad = tape.gradient(cost, [W, b])
 W_grad.numpy(), b_grad.numpy()
-
+#텐서에서 넘파이 어레이로 변환하려면 .numpy() 메소드 사용
 learning_rate = 0.01
 #학습률 입력
 
